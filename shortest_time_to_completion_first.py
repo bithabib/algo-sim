@@ -7,6 +7,7 @@ class Process:
         self.start_time = None
         self.end_time = None
         self.waiting_time = None
+        self.response_time = None
 
 class STCF:
     def __init__(self):
@@ -30,6 +31,9 @@ class STCF:
             process = queue_and_running_processes.pop(0)
             if process.arrival_time <= current_time:
                 print("currently running process:",process.pid)
+                if process.start_time == None:
+                    process.start_time = current_time
+                    process.response_time = process.start_time - process.arrival_time
                 process.remaining_time -= 1
                 if process.remaining_time == 0:
                     process.end_time = current_time + 1
@@ -49,6 +53,14 @@ class STCF:
         for process in self.processes:
             total_waiting_time += process.waiting_time
         return total_waiting_time / len(self.processes)
+    
+    def get_average_response_time(self):
+        if len(self.processes) == 0:
+            return 0
+        total_response_time = 0
+        for process in self.processes:
+            total_response_time += process.response_time
+        return total_response_time / len(self.processes)
 
 # Create a list of Process objects
 processes = [
@@ -69,3 +81,4 @@ scheduler.execute()
 
 # Print the average waiting time
 print("Average waiting time:", scheduler.get_average_waiting_time())
+print("Average response time:", scheduler.get_average_response_time())
