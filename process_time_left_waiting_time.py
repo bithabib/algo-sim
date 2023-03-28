@@ -25,14 +25,14 @@ class PTL_WT:
 
             # Get the next process with the shortest remaining time
             process = remaining_processes.pop(0)
-
+            # print(process.start_time)
             # Update the start and end times for the process
             if current_time < process.arrival_time:
                 current_time = process.arrival_time
             process.start_time = current_time
             process.end_time = current_time + process.remaining_time
             process.waiting_time = process.start_time - process.arrival_time
-
+            # print(process.start_time)
             # Update the remaining time for all other processes
             for other_process in remaining_processes:
                 if other_process.arrival_time <= process.end_time:
@@ -40,6 +40,7 @@ class PTL_WT:
 
             # Update the current time and add the process to the completed list
             current_time = process.end_time
+            print(process.pid)
             completed_processes.append(process)
 
         # Replace the processes list with the completed list
