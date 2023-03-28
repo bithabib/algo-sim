@@ -51,6 +51,7 @@ class STCF:
             return 0
         total_waiting_time = 0
         for process in self.processes:
+            print("Process: {}, waiting_time: {}".format(process.pid, process.waiting_time))
             total_waiting_time += process.waiting_time
         return total_waiting_time / len(self.processes)
     
@@ -59,6 +60,7 @@ class STCF:
             return 0
         total_response_time = 0
         for process in self.processes:
+            print("Process: {}, response_time: {}".format(process.pid, process.response_time))
             total_response_time += process.response_time
         return total_response_time / len(self.processes)
 
@@ -80,5 +82,7 @@ for process in processes:
 scheduler.execute()
 
 # Print the average waiting time
+print()
 print("Average waiting time:", scheduler.get_average_waiting_time())
+print()
 print("Average response time:", scheduler.get_average_response_time())
