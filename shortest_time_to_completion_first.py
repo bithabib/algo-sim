@@ -18,32 +18,29 @@ class STCF:
     def execute(self):
         current_time = 0
         remaining_processes = self.processes.copy()
-        completed_processes = []
+        
         while remaining_processes:
-            # Sort the remaining processes by remaining time
-            remaining_processes.sort(key=lambda process: process.remaining_time)
+        # while current_time < 10:
+            print("current time:",current_time)
+            queue_and_running_processes = []
+            for process in remaining_processes:
+                if process.arrival_time <= current_time:
+                    queue_and_running_processes.append(process)
+            queue_and_running_processes.sort(key=lambda process: process.remaining_time)
+            process = queue_and_running_processes.pop(0)
+            if process.arrival_time <= current_time:
+                print("currently running process:",process.pid)
+                process.remaining_time -= 1
+                if process.remaining_time == 0:
+                    process.end_time = current_time + 1
+                    process.waiting_time = process.end_time - process.arrival_time - process.burst_time
+                    remaining_processes.remove(process)
+            current_time += 1
 
-            # Get the next process with the shortest remaining time
-            process = remaining_processes.pop(0)
-
-            # Update the start and end times for the process
-            if current_time < process.arrival_time:
-                current_time = process.arrival_time
-            process.start_time = current_time
-            process.end_time = current_time + process.remaining_time
-            process.waiting_time = process.start_time - process.arrival_time
-
-            # Update the remaining time for all other processes
-            for other_process in remaining_processes:
-                if other_process.arrival_time <= process.end_time:
-                    other_process.remaining_time -= process.remaining_time
-
-            # Update the current time and add the process to the completed list
-            current_time = process.end_time
-            completed_processes.append(process)
-
-        # Replace the processes list with the completed list
-        self.processes = completed_processes
+            for process in remaining_processes:
+                print("remaining processes:{}, remaining time:{}".format(process.pid,process.remaining_time))
+                
+            
 
     def get_average_waiting_time(self):
         if len(self.processes) == 0:
