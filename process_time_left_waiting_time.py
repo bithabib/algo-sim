@@ -6,7 +6,8 @@ class Process:
         self.remaining_time = burst_time
         self.start_time = None
         self.end_time = None
-        self.waiting_time = None
+        self.waiting_time = 0
+        self.consecutive_waiting_time = 0
         self.response_time = None
 
 class PTL_WT:
@@ -27,7 +28,8 @@ class PTL_WT:
             for process in remaining_processes:
                 if process.arrival_time <= current_time:
                     queue_and_running_processes.append(process)
-            queue_and_running_processes.sort(key=lambda process: process.remaining_time)
+            queue_and_running_processes.sort(key=lambda process: (process.remaining_time - (process.consecutive_waiting_time*0.6)))
+            print("Number of processes in queue:",len(queue_and_running_processes))
             process = queue_and_running_processes.pop(0)
             if process.arrival_time <= current_time:
                 print("currently running process:",process.pid)
@@ -39,6 +41,9 @@ class PTL_WT:
                     process.end_time = current_time + 1
                     process.waiting_time = process.end_time - process.arrival_time - process.burst_time
                     remaining_processes.remove(process)
+            
+            for process in queue_and_running_processes:
+                process.consecutive_waiting_time += 1
             current_time += 1
 
             for process in remaining_processes:
@@ -70,7 +75,20 @@ processes = [
     Process(2, 2, 5),
     Process(3, 5, 2),
     Process(4, 6, 3),
-    Process(5, 8, 4)
+    Process(5, 7, 4),
+    Process(5, 8, 2),
+    Process(5, 9, 2),
+    Process(5, 10, 2),
+    Process(5, 11, 2),
+    Process(5, 12, 2),
+    Process(5, 13, 2),
+    Process(5, 14, 2),
+    Process(5, 15, 2),
+    Process(5, 16, 8),
+    Process(5, 16, 8),
+    Process(5, 16, 8),
+    Process(5, 16, 8),
+    Process(5, 16, 8),
 ]
 
 # Instantiate the PTL_WT scheduler and add the list of Process objects to it
