@@ -1,9 +1,10 @@
 # Scheduling Algorithms in Python
-This repository contains Python implementations of three different scheduling algorithms:
+This repository contains Python implementations of four different scheduling algorithms:
 
 - First Come, First Serve (FCFS)
 - Shortest Job First (SJF)
-- Round Robin
+- Round Robin (RR)
+- Two Layer Process Time - Waiting Time (TLPS-WT)
 
 
 Each implementation consists of a Python class that represents a scheduling algorithm, along with a Process class that represents a process that can be scheduled by the algorithm. The implementations include methods for adding processes to the scheduler, executing the scheduler, and calculating the average waiting time of the processes.
