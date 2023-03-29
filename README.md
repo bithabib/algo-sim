@@ -14,7 +14,7 @@ To use these scheduling algorithms, you will need Python 3 installed on your com
 Once you have Python 3 installed, you can clone this repository to your local machine using the following command:
 
 ```
-git clone https://github.com/yourusername/scheduling-algorithms.git
+git clone https://github.com/HabiburRahman1/scheduler_algorithm_simulation.git
 ```
 ## Usage
 Each scheduling algorithm implementation is contained in a separate Python file (fcfs.py, sjf.py, and round_robin.py). To use an implementation, you can import the corresponding class into your Python code and create an instance of the class:
