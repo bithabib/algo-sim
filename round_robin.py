@@ -7,6 +7,7 @@ class Process:
         self.start_time = None
         self.end_time = None
         self.waiting_time = None
+        self.response_time = 0
 
 class RoundRobin:
     def __init__(self, quantum):
@@ -25,6 +26,9 @@ class RoundRobin:
             for process in remaining_processes:
                 if process.remaining_time <= self.quantum:
                     # If the remaining time for the process is less than or equal to the quantum, execute the process to completion
+                    if process.start_time == None:
+                        process.start_time = current_time
+                        process.response_time = process.start_time - process.arrival_time
                     process.start_time = current_time
                     process.end_time = current_time + process.remaining_time
                     process.waiting_time = process.start_time - process.arrival_time
@@ -52,6 +56,14 @@ class RoundRobin:
         for process in self.processes:
             total_waiting_time += process.waiting_time
         return total_waiting_time / len(self.processes)
+
+    def response_time(self):
+        if len(self.processes) == 0:
+            return 0
+        total_response_time = 0
+        for process in self.processes:
+            total_response_time += process.response_time
+        return total_response_time / len(self.processes)
 
 # Create a list of Process objects
 processes = [
@@ -84,3 +96,4 @@ scheduler.execute()
 
 # Print the average waiting time
 print("Average waiting time:", scheduler.get_average_waiting_time())
+print("Average response time:", scheduler.response_time())
