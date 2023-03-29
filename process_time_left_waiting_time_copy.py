@@ -3,13 +3,15 @@ class Process:
         self.pid = pid
         self.arrival_time = arrival_time
         self.burst_time = burst_time
+        self.change_in_burst_time = burst_time
         self.remaining_time = burst_time
         self.start_time = None
         self.end_time = None
-        self.waiting_time = None
+        self.waiting_time = 0
+        self.consecutive_waiting_time = 0
         self.response_time = None
 
-class STCF:
+class PTL_WT:
     def __init__(self):
         self.processes = []
 
@@ -19,15 +21,41 @@ class STCF:
     def execute(self):
         current_time = 0
         remaining_processes = self.processes.copy()
+        second_queue = []
         
         while remaining_processes:
-        # while current_time < 10:
             print("current time:",current_time)
             queue_and_running_processes = []
             for process in remaining_processes:
                 if process.arrival_time <= current_time:
                     queue_and_running_processes.append(process)
-            queue_and_running_processes.sort(key=lambda process: process.remaining_time)
+                    if len(queue_and_running_processes) > 1:
+                        pop_previous_process = queue_and_running_processes.pop(0)
+                        if (pop_previous_process.burst_time - pop_previous_process.remaining_time) > 3:
+                            second_queue.append(pop_previous_process)
+                            if len(second_queue) > len(queue_and_running_processes)*20:
+                                second_queue.sort(key=lambda process: (process.remaining_time - (process.consecutive_waiting_time)))
+                                queue_and_running_processes.append(second_queue.pop(0))
+                        else:
+                            queue_and_running_processes.append(pop_previous_process)
+                    
+                    else:
+                        pop_previous_process = queue_and_running_processes.pop(0)
+                        if (pop_previous_process.burst_time - pop_previous_process.remaining_time) > 3:
+                            second_queue.append(pop_previous_process)
+                            if len(second_queue) > len(queue_and_running_processes)*20:
+                                second_queue.sort(key=lambda process: (process.remaining_time - (process.consecutive_waiting_time)))
+                                queue_and_running_processes.append(second_queue.pop(0))
+                        else:
+                            queue_and_running_processes.append(pop_previous_process)
+                else:
+                    if len(queue_and_running_processes) == 0:
+                        second_queue.sort(key=lambda process: (process.remaining_time - (process.consecutive_waiting_time)))
+                        queue_and_running_processes.append(second_queue.pop(0))
+                        
+            queue_and_running_processes.sort(key=lambda process: (process.remaining_time - (process.consecutive_waiting_time)))
+
+            print("Number of processes in queue:",len(queue_and_running_processes))
             process = queue_and_running_processes.pop(0)
             if process.arrival_time <= current_time:
                 print("currently running process:",process.pid)
@@ -39,6 +67,9 @@ class STCF:
                     process.end_time = current_time + 1
                     process.waiting_time = process.end_time - process.arrival_time - process.burst_time
                     remaining_processes.remove(process)
+            
+            for process in queue_and_running_processes:
+                process.consecutive_waiting_time += 1
             current_time += 1
 
             for process in remaining_processes:
@@ -88,8 +119,9 @@ processes = [
     Process(21, 30, 8),
     Process(22, 30, 8),
 ]
-# Instantiate the STCF scheduler and add the list of Process objects to it
-scheduler = STCF()
+
+# Instantiate the PTL_WT scheduler and add the list of Process objects to it
+scheduler = PTL_WT()
 for process in processes:
     scheduler.add_process(process)
 

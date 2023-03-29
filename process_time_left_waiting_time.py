@@ -28,7 +28,7 @@ class PTL_WT:
             for process in remaining_processes:
                 if process.arrival_time <= current_time:
                     queue_and_running_processes.append(process)
-            queue_and_running_processes.sort(key=lambda process: (process.remaining_time - (process.consecutive_waiting_time*0.6)))
+            queue_and_running_processes.sort(key=lambda process: (process.remaining_time - (process.consecutive_waiting_time)))
             print("Number of processes in queue:",len(queue_and_running_processes))
             process = queue_and_running_processes.pop(0)
             if process.arrival_time <= current_time:
@@ -71,7 +71,7 @@ class PTL_WT:
 
 # Create a list of Process objects
 processes = [
-    Process(1, 0, 10),
+    Process(1, 0, 20),
     Process(2, 2, 5),
     Process(3, 5, 2),
     Process(4, 6, 3),
@@ -85,7 +85,7 @@ processes = [
     Process(5, 14, 2),
     Process(5, 15, 2),
     Process(5, 16, 8),
-    Process(5, 16, 8),
+    Process(5, 16, 20),
     Process(5, 16, 8),
     Process(5, 16, 8),
     Process(5, 16, 8),
