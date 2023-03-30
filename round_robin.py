@@ -67,24 +67,9 @@ class RoundRobin:
 
 # Create a list of Process objects
 processes = [
-    Process(1, 0, 10),
-    Process(2, 2, 5),
+    Process(1, 0, 4),
+    Process(2, 2, 3),
     Process(3, 5, 2),
-    Process(4, 6, 3),
-    Process(5, 7, 4),
-    Process(5, 8, 2),
-    Process(5, 9, 2),
-    Process(5, 10, 2),
-    Process(5, 11, 2),
-    Process(5, 12, 2),
-    Process(5, 13, 2),
-    Process(5, 14, 2),
-    Process(5, 15, 2),
-    Process(5, 16, 8),
-    Process(5, 16, 8),
-    Process(5, 16, 8),
-    Process(5, 16, 8),
-    Process(5, 16, 8),
 ]
 # Instantiate the RoundRobin scheduler with a quantum of 3 and add the list of Process objects to it
 scheduler = RoundRobin(3)
