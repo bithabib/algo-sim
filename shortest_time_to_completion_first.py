@@ -67,10 +67,11 @@ class STCF:
 # Create a list of Process objects
 processes = [
     Process(1, 0, 6),
-    Process(2, 2, 3),
+    Process(2, 2, 4),
     Process(3, 5, 2),
-    Process(3, 5, 2),
+    Process(4, 2, 2),
 ]
+
 # Instantiate the STCF scheduler and add the list of Process objects to it
 scheduler = STCF()
 for process in processes:
