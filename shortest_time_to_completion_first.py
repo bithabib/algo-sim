@@ -65,6 +65,10 @@ class STCF:
         return total_response_time / len(self.processes)
 
 # Create a list of Process objects
+# The first parameter is the process ID
+# The second parameter is the arrival time
+# The third parameter is the burst time
+
 processes = [
     Process(1, 0, 6),
     Process(2, 2, 4),
